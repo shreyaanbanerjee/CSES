@@ -159,22 +159,29 @@ istream& operator>>(istream& din, vector<ll>& vec)
 #define intmax INT_MAX
 void write()
 {
-    ll n,k=1,ans=1,m;
+    ll n,ans=0,a=0;
     cin>>n;
-    vl x(n);
-    cin>>x;
-    vl a(n+1);
-    lo(i,0,n)
+    map<ll,ll>m;
+    for(ll i=0;i<n;i++)
     {
-        a[x[i]]=i+1;
+        ll x;
+        cin>>x;
+        if(m.find(x)!=m.end())
+        {
+            if(m[x]>=a)
+            {
+                a=m[x]+1;
+            }
+            m[x]=i;
+        }
+        else
+        {
+            m.insert({x,i});
+        }
+        ans=max(ans,i-a+1);
+
     }
-    lo(i,1,n+1)
-    {
-       if(k>a[i])
-       ans++;
-       k=a[i];
-    }
-    cout<<ans<<endl;
+cout<<ans<<endl;
 }
 int main()
 {
@@ -184,6 +191,5 @@ int main()
     {
         write();
     }
-
     return 0;
 }

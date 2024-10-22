@@ -159,22 +159,26 @@ istream& operator>>(istream& din, vector<ll>& vec)
 #define intmax INT_MAX
 void write()
 {
-    ll n,k=1,ans=1,m;
+    ll n,k=0;
     cin>>n;
-    vl x(n);
-    cin>>x;
-    vl a(n+1);
+    vl v(n);
+    cin>>v;
+    multiset<int>ms;
     lo(i,0,n)
     {
-        a[x[i]]=i+1;
+        auto it=ms.upper_bound(v[i]);
+        if(it==ms.end())
+        {
+            k++;
+            ms.insert(v[i]);
+        }
+        else
+        {
+            ms.erase(it);
+            ms.insert(v[i]);
+        }
     }
-    lo(i,1,n+1)
-    {
-       if(k>a[i])
-       ans++;
-       k=a[i];
-    }
-    cout<<ans<<endl;
+    cout<<k<<endl;
 }
 int main()
 {

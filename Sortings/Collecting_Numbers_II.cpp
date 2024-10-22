@@ -160,10 +160,10 @@ istream& operator>>(istream& din, vector<ll>& vec)
 void write()
 {
     ll n,k=1,ans=1,m;
-    cin>>n;
+    cin>>n>>m;
     vl x(n);
     cin>>x;
-    vl a(n+1);
+    vl a(n+1,0);
     lo(i,0,n)
     {
         a[x[i]]=i+1;
@@ -174,7 +174,25 @@ void write()
        ans++;
        k=a[i];
     }
-    cout<<ans<<endl;
+    // cout<<a;
+    while(m--)
+    {
+        ll j,l;
+        cin>>j>>l;
+        ll fi=x[j-1], se=x[l-1];
+        swap(x[j-1],x[l-1]);
+        if(a[fi]>a[fi+1] && l<=a[fi+1]) ans--;
+        if(a[fi-1]>a[fi] && l>=a[fi-1]) ans--;
+        if(a[fi-1]<=a[fi] && l<a[fi-1]) ans++;
+        if(a[fi]<=a[fi+1] && l>a[fi+1]) ans++;
+        a[fi]=l;
+        if(a[se]>a[se+1] && j<=a[se+1]) ans--;
+        if(a[se-1]>a[se] && j>=a[se-1]) ans--;
+        if(a[se-1]<=a[se] && j<a[se-1]) ans++;
+        if(a[se]<=a[se+1] && j>a[se+1]) ans++;
+        a[se]=j;
+        cout<<ans<<endl;
+    }
 }
 int main()
 {
