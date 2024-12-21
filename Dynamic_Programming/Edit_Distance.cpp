@@ -157,25 +157,48 @@ istream& operator>>(istream& din, vector<ll>& vec)
     return din;
 }
 #define intmax INT_MAX
+int dist(int i,int j, string s,string t, vector<vector<ll>> &dp)
+{
+    if(i==-1 && j==-1) return 0;
+    if(i==-1 || j==-1) return 1e9;
+    // cout<<s[i]<<" "<<t[j]<<endl;
+    if(dp[i][j]!=-1) return dp[i][j];
+    if(s[i]==t[j])
+    return dp[i][j]=dist(i-1,j-1,s,t,dp);
+    return dp[i][j]= 1+min(min(dist(i-1,j,s,t,dp),dist(i-1,j-1,s,t,dp)),dist(i,j-1,s,t,dp));
+}
+void write()
+{
+    string s,t;
+    cin>>s;
+    cin>>t;
+    ll n=s.length(),m=t.length();
+    vector<vector<ll>> dp(n+1,vector<ll>(m+1,0));
+    dp[0][0]=0;
+    lo(i,0,n+1) dp[i][0]=i;
+    lo(i,0,m+1) dp[0][i]=i;
+    lo(i,1,n+1)
+    {
+        lo(j,1,m+1)
+        {
+            if(s[i-1]==t[j-1])
+            dp[i][j]=dp[i-1][j-1];
+            else
+            dp[i][j]=1+min(min(dp[i-1][j],dp[i-1][j-1]),dp[i][j-1]);
+        }
+    }
+    cout<<dp[n][m]<<endl;
+}
 int main()
 {
 ios_base::sync_with_stdio(false);
 cin.tie(NULL); 
-vll dp(2,vl(1e6+1,0));
-    dp[0][0]=1;
-    dp[1][0]=1;
-    lo(i,1,1e6+1)
-    {
-        dp[0][i]=(4*dp[0][i-1]+dp[1][i-1])%MOD;
-        dp[1][i]=(dp[0][i-1]+2*dp[1][i-1])%MOD;
-    }
-    int t;
-    cin >> t;
+    int t=1;
+    // cin >> t;
     while (t--)
     {
-        ll n;
-        cin>>n;
-        cout<<(dp[0][n-1]+dp[1][n-1])%MOD<<endl;
+        write();
     }
+
     return 0;
 }

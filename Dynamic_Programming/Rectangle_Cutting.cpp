@@ -157,25 +157,36 @@ istream& operator>>(istream& din, vector<ll>& vec)
     return din;
 }
 #define intmax INT_MAX
+void write()
+{
+    ll a,b;
+    cin>>a>>b;
+    vll dp(a+1,vl(b+1,0));
+    lo(i,1,a+1)
+    {
+        lo(j,1,b+1)
+        {
+            if(i==j)
+            dp[i][j]=0;
+            else if(i>j)
+            dp[i][j]=1+dp[i-j][j];
+            else 
+            dp[i][j]=1+dp[i][j-i];
+        }
+    }
+    cout<<dp[116][288]<<" "<<dp[4][28]<<endl;
+    cout<<dp[a][b]<<endl;
+}
 int main()
 {
 ios_base::sync_with_stdio(false);
 cin.tie(NULL); 
-vll dp(2,vl(1e6+1,0));
-    dp[0][0]=1;
-    dp[1][0]=1;
-    lo(i,1,1e6+1)
-    {
-        dp[0][i]=(4*dp[0][i-1]+dp[1][i-1])%MOD;
-        dp[1][i]=(dp[0][i-1]+2*dp[1][i-1])%MOD;
-    }
-    int t;
-    cin >> t;
+    int t=1;
+    // cin >> t;
     while (t--)
     {
-        ll n;
-        cin>>n;
-        cout<<(dp[0][n-1]+dp[1][n-1])%MOD<<endl;
+        write();
     }
+
     return 0;
 }
