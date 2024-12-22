@@ -157,46 +157,48 @@ istream& operator>>(istream& din, vector<ll>& vec)
     return din;
 }
 #define intmax INT_MAX
-void write()
+    ll n,m;char x;
+    int vis[1000][1000];
+    int dx[]={1,-1,0,0};
+    int dy[]={0, 0, 1, -1};
+void dfs(ll x,ll y)
 {
-    ll a,b;
-    cin>>a>>b;
-    vll dp(a+1,vl(b+1,1000));
-    lo(i,1,a+1)
-    {
-        lo(j,1,b+1)
+ vis[x][y]=1;
+ lo(i,0,4)
+ {
+        ll nx=x+dx[i];
+        ll ny=y+dy[i];
+        if(!vis[nx][ny] && nx>=0 && nx<n && ny>=0 && ny<m)
         {
-            if(i==j)
-            {
-                dp[i][j]=0;
-                // cout<<dp[i][j]<<" ";
-                continue;
-                }
-            lo(k,1,j)
-            {
-                dp[i][j]=min(dp[i][j],1+dp[i][k]+dp[i][j-k]);
-            }
-            lo(k,1,i)
-            {
-                dp[i][j]=min(dp[i][j],1+dp[k][j]+dp[i-k][j]);
-            }
-            // cout<<dp[i][j]<<" ";
+            dfs(nx,ny);
         }
-        // cout<<endl;
-    }
-    // cout<<dp[116][288]<<" "<<dp[4][28]<<endl;
-    cout<<dp[a][b]<<endl;
+ }
 }
 int main()
 {
 ios_base::sync_with_stdio(false);
 cin.tie(NULL); 
-    int t=1;
-    // cin >> t;
-    while (t--)
+    cin>>n>>m;
+    lo(i,0,n)
     {
-        write();
+        lo(j,0,m)
+        {
+            cin>>x;
+            vis[i][j]=(x=='#');
+        }
     }
-
+    ll ans=0;
+    lo(i,0,n)
+    {
+        lo(j,0,m)
+        {
+            if(!vis[i][j])
+            {
+               dfs(i,j);
+               ans++;
+            }
+        }
+    }
+    cout<<ans<<endl;
     return 0;
 }
