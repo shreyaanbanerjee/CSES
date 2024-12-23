@@ -157,79 +157,72 @@ istream& operator>>(istream& din, vector<ll>& vec)
     return din;
 }
 #define intmax INT_MAX
- ll n,m;char x;
-    int vis[1000][1000];
-    int dx[]={1,-1,0,0};
-    int dy[]={0, 0, 1, -1};
-    string dir="DURL";
+ll N;
+vll adj(100001);
+vl vis(100001,0);
+vl par(100001);
+ll bfs()
+{
+queue<ll>q;
+    q.push(1);
+    vis[1]=1;
+    while(!q.empty())
+    {
+        ll curr=q.front();
+        q.pop();
+        for(auto i:adj[curr])
+        {
+            if(!vis[i])
+            {
+            par[i]=curr;
+            vis[i]=1;
+            q.push(i);
+            if(i==N)
+            {
+               return N;
+            }
+            }
+        }
+    }
+    return -1;
+}
+void write()
+{
+    ll n,m;
+    cin>>N>>m;
+    lo(i,0,m)
+    {
+        ll x,y;
+        cin>>x>>y;
+       adj[x].pb(y);
+       adj[y].pb(x);
+    }
+    if(bfs()==-1)
+    {
+        cout<<"IMPOSSIBLE"<<endl;
+        return;
+    }
+    ll tem=N;
+    vl res;res.pb(N);
+    while(tem!=1)
+    {
+        res.pb(par[tem]);
+        tem=par[tem];
+    }
+    cout<<res.size()<<endl;
+    reverse(all(res));
+    cout<<res;
+}
 int main()
 {
 ios_base::sync_with_stdio(false);
 cin.tie(NULL); 
-    cin>>n>>m;
-pll a,b;
-    lo(i,0,n)
+    int t=1;
+    // cin >> t;
+    while (t--)
     {
-        lo(j,0,m)
-        {
-            cin>>x;
-            vis[i][j]=(x=='#');
-            if(x=='A') {
-                a={i,j};
-                vis[i][j]=1;
-                };
-            if(x=='B') 
-            {
-            b={i,j};
-            }
-        }
+        write();
     }
-    ll ans=0;
-    int prev[n][m];
-    memset(prev,0,sizeof(prev));
-    queue<pll>q;
-    q.push(a);
 
-while(!q.empty())
-{
-    ll x=q.front().first;
-    ll y=q.front().second;
-    if(b==q.front())
-    break;
-    q.pop();
-    lo(i,0,4)
-    {
-        ll nx=x+dx[i];
-        ll ny=y+dy[i];
-        if(!vis[nx][ny] && nx>=0 && nx<n && ny>=0 && ny<m)
-        {
-            vis[nx][ny]=1;
-            q.push({nx,ny});
-            prev[nx][ny]=i;
-        }
-    }
-}
-// lo(i,0,n)
-// {
-//     lo(j,0,m)
-//     {
-//         cout<<prev[i][j]<<" ";
-//     }
-//     cout<<endl;
-// }
-if(!vis[b.first][b.second])
-{
-    no();return 0;
-}
-cout<<"YES"<<endl;
-string str="";
-while(b!=a)
-{
-  ll i=prev[b.first][b.second];
-  str.push_back(dir[i]);
-  b={b.first-dx[i],b.second-dy[i]};
-}
-cout<<str.size()<<endl;
-reverse(all(str));
-cout<<str;
+    return 0;
 }
