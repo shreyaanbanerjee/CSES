@@ -1,233 +1,82 @@
 #include <bits/stdc++.h>
+#define endl "\n"
 using namespace std;
-#define ll long long
-#define pii pair<int, int>
-#define pll pair<ll, ll>
-#define vpl vector<pll>
-#define vi vector<int>
-#define vl vector<ll>
-#define vll vector<vl>
-#define mii map<int, int>
-#define si set<int>
-#define sll set<ll,ll>
-#define sc set<char>
-#define pb push_back
-#define all(x) begin(x), end(x)
-#define fori for (i = 0; i < n; i++)
-template <class T>
-void print_v(vector<T> &v)
+#define int long long int
+ 
+ 
+int n, m;
+int sv, ev;
+vector<vector<int>> g;
+vector<int> vis;
+vector<int> parent;
+ 
+ 
+bool dfs(int u, int p)
 {
-    cout << "{";
-    for (auto x : v)
-        cout << x << ",";
-    cout << "\b}";
+	vis[u] = true;
+	parent[u] = p;
+	for(auto v: g[u])
+	{
+		if(v == p) continue;
+		if(vis[v]) 
+		{
+			sv = v; 
+			ev = u; 
+			return true;
+		} 
+		if(!vis[v]) 
+			if(dfs(v,u)) 
+				return true;
+	}
+	return false;
 }
-#define MOD 1000000007
-#define PI 3.1415926535897932384626433832795
-#define read(type) readInt<type>()
-int power(int x, unsigned int y)
+ 
+ 
+bool visit_all()
 {
-    int res = 1; // Initialize result
-    while (y > 0)
-    {
-        if (y & 1)
-            res = res * x;
-        y = y >> 1;
-        x = x * x;
-    }
-    return res;
+	for(int i = 1; i <= n; ++i)
+	{
+		if(!vis[i])
+			if(dfs(i,-1)) return true;
+	}
+	return false;
 }
-ll min(ll a, int b)
+ 
+int32_t main()
 {
-    if (a < b)
-        return a;
-    return b;
-}
-ll min(int a, ll b)
-{
-    if (a < b)
-        return a;
-    return b;
-}
-ll max(ll a, int b)
-{
-    if (a > b)
-        return a;
-    return b;
-}
-ll max(int a, ll b)
-{
-    if (a > b)
-        return a;
-    return b;
-}
-ll gcd(ll a, ll b)
-{
-    if (b == 0)
-        return a;
-    return gcd(b, a % b);
-}
-#define for0(i, n) for (int i = 0; i < (int)(n); ++i)
-#define for1(i, n) for (int i = 1; i <= (int)(n); ++i)
-ll expo(ll a, ll b, ll mod)
-{
-    ll res = 1;
-    while (b > 0)
-    {
-        if (b & 1)
-            res = (res * a) % mod;
-        a = (a * a) % mod;
-        b = b >> 1;
-    }
-    return res;
-}
-ll lcm(ll a, ll b) { return a / gcd(a, b) * b; }
-string to_upper(string a)
-{
-    for (int i = 0; i < (int)a.size(); ++i)
-        if (a[i] >= 'a' && a[i] <= 'z')
-            a[i] -= 'a' - 'A';
-    return a;
-}
-string to_lower(string a)
-{
-    for (int i = 0; i < (int)a.size(); ++i)
-        if (a[i] >= 'A' && a[i] <= 'Z')
-            a[i] += 'a' - 'A';
-    return a;
-}
-bool prime(ll a)
-{
-    if (a == 1)
-        return 0;
-    for (int i = 2; i <= round(sqrt(a)); ++i)
-        if (a % i == 0)
-            return 0;
-    return 1;
-}
-void yes() { cout << "YES\n"; }
-void no() { cout << "NO\n"; }
-typedef long int int32;
-typedef unsigned long int uint32;
-typedef long long int int64;
-typedef unsigned long long int uint64;
-bool vowel(char ch)
-{
-    if (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u')
-        return true;
-    return false;
-}
-vector<int> SieveOfEratosthenes(int n)
-{
-    bool prime[n + 1];
-    memset(prime, true, sizeof(prime));
-
-    vector<int> primes; 
-    for (int p = 2; p * p <= n; p++) {
-        if (prime[p]) {
-            for (int i = p * p; i <= n; i += p)
-                prime[i] = false;
-        }
-    }
-    for (int p = 2; p <= n; p++) {
-        if (prime[p]) {
-            primes.push_back(p);
-        }
-    }
-
-    return primes; 
-}
-#define lo(i,f,t) for(ll i=f;i<t;i++)
-ostream& operator<<(ostream& dout, vector<ll>& vec) 
-{
-    lo(i, 0, vec.size())
-    {
-        dout << vec[i] << " ";
-    }
-    dout << endl;
-    return dout;
-}
-istream& operator>>(istream& din, vector<ll>& vec) 
-{
-    lo(i, 0, vec.size())
-    {
-        din >> vec[i];
-    }
-    return din;
-}
-#define intmax INT_MAX
-vl par(100000,0);
-vll adj(100000);
-vl vis(100000,0);
-int dfs(ll u, ll s)
-{
-    vis[u]=1;
-    for(auto v:adj[u])
-    {
-        if(v!=par[u])
-        {
-            if(!vis[v])
-            {
-                vis[v]=1;
-                par[v]=u;
-                dfs(v,s);
-            }
-            else
-            {
-                return v;
-            }
-        }
-    }
-    return 0;
-}
-void write()
-{
-    ll n,m;
-    cin>>n>>m;
-    lo(i,0,m)
-    {
-        ll a,b;
-        cin>>a>>b;
-        adj[a].pb(b);
-        adj[b].pb(a);
-    }
-    lo(i,1,n+1)
-    {
-        if(adj[i].size()==0)
-        continue;
-        ll t=dfs(i,i);
-        ll r=t;
-        vl res;
-        if(r)
-        {
-            res.pb(t);
-            r=par[t];
-           while(r!=t)
-           {
-             res.pb(r);
-             r=par[r];
-           }
-           res.pb(t);
-           cout<<res.size()<<endl;
-           reverse(all(res));
-           cout<<res;
-           return;
-        }
-        fill(all(par),0);
-        fill(all(vis),0);
-    }
-    cout<<"IMPOSSIBLE"<<endl;
-}
-int main()
-{
-ios_base::sync_with_stdio(false);
-cin.tie(NULL); 
-    int t=1;
-    // cin >> t;
-    while (t--)
-    {
-        write();
-    }
-
-    return 0;
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cin >> n >> m;
+	g.resize(n+1);
+	vis.resize(n+1);
+	parent.resize(n+1);
+	for(int i =0 ; i < m; ++i)
+	{
+		int u, v;
+		cin >> u >> v;
+		g[u].push_back(v);
+		g[v].push_back(u);
+	}
+ 
+	if(!visit_all())
+	{
+		cout << "IMPOSSIBLE" << endl;
+		return 0;
+	}
+ 
+	int tv = ev;
+	vector<int> ans;
+	ans.push_back(ev);
+	while(tv != sv)
+	{
+		ans.push_back(parent[tv]);
+		tv = parent[tv];
+	}
+	ans.push_back(ev);
+	cout << ans.size() << endl;
+	for(auto c: ans)
+	{
+		cout << c << " ";
+	}
+ 
 }
