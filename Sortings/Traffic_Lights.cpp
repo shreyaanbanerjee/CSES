@@ -161,8 +161,8 @@ void write()
 {
     ll x,n;
     cin>>x>>n;
-    set<ll>s;
-    set<ll>len;
+    multiset<ll>s;
+    multiset<ll>len;
     s.insert(0);
     s.insert(x);
     len.insert(x);
