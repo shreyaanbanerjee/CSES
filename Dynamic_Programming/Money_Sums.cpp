@@ -1,3 +1,4 @@
+
 #include <bits/stdc++.h>
 using namespace std;
 #define ll long long
@@ -121,7 +122,7 @@ vector<int> SieveOfEratosthenes(int n)
 {
     bool prime[n + 1];
     memset(prime, true, sizeof(prime));
- 
+
     vector<int> primes; 
     for (int p = 2; p * p <= n; p++) {
         if (prime[p]) {
@@ -134,7 +135,7 @@ vector<int> SieveOfEratosthenes(int n)
             primes.push_back(p);
         }
     }
- 
+
     return primes; 
 }
 #define lo(i,f,t) for(ll i=f;i<t;i++)
@@ -159,25 +160,32 @@ istream& operator>>(istream& din, vector<ll>& vec)
 #define intmax INT_MAX
 void write()
 {
-    ll n,k=0,f=0;
+    ll n,s=0;
     cin>>n;
-    vl a(n,0);
-    vl ans;
-    ll i=0;
-    while(ans.size()!=n)
+    vl v(n);
+    cin>>v;
+    lo(i,0,n) s+=v[i];
+    vector<vector<bool>> dp(n+1,vector<bool>(s+1,0));
+    lo(i,0,n+1) dp[i][0]=1;
+    lo(i,1,s+1) dp[0][i]=0;
+    for(ll i=1;i<=n;i++)
     {
-        while(a[i])
+        for(ll j=1;j<=s+1;j++)
         {
-            i=(i+1)%(n);
-        }
-            i=(i+1)%n;
-        while(a[i])
+            ll t=0;
+            if(j>=v[i-1])
             {
-                i=(i+1)%(n);
+                t=dp[i-1][j-v[i-1]];
             }
-        ans.pb(i+1);
-        a[i]=1;
+            dp[i][j]=dp[i-1][j] | t;
+        }
     }
+    vl ans;
+    for(ll i=1;i<=s;i++)
+    {
+        if(dp[n][i]) ans.pb(i);
+    }
+    cout<<ans.size()<<endl;
     cout<<ans;
 }
 int main()
@@ -190,6 +198,6 @@ cin.tie(NULL);
     {
         write();
     }
- 
+
     return 0;
 }

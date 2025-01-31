@@ -121,7 +121,7 @@ vector<int> SieveOfEratosthenes(int n)
 {
     bool prime[n + 1];
     memset(prime, true, sizeof(prime));
- 
+
     vector<int> primes; 
     for (int p = 2; p * p <= n; p++) {
         if (prime[p]) {
@@ -134,7 +134,7 @@ vector<int> SieveOfEratosthenes(int n)
             primes.push_back(p);
         }
     }
- 
+
     return primes; 
 }
 #define lo(i,f,t) for(ll i=f;i<t;i++)
@@ -156,29 +156,63 @@ istream& operator>>(istream& din, vector<ll>& vec)
     }
     return din;
 }
+class DisjointSet {
+    vector<int> rank, parent;
+public:
+    DisjointSet(int n) {
+        rank.resize(n + 1, 0);
+        parent.resize(n + 1);
+        for (int i = 0; i <= n; i++) {
+            parent[i] = i;
+        }
+    }
+
+    int findUPar(int node) {
+        if (node == parent[node])
+            return node;
+        return parent[node] = findUPar(parent[node]);
+    }
+
+    void unionByRank(int u, int v) {
+        int ulp_u = findUPar(u);
+        int ulp_v = findUPar(v);
+        if (ulp_u == ulp_v) return;
+        if (rank[ulp_u] < rank[ulp_v]) {
+            parent[ulp_u] = ulp_v;
+        }
+        else if (rank[ulp_v] < rank[ulp_u]) {
+            parent[ulp_v] = ulp_u;
+        }
+        else {
+            parent[ulp_v] = ulp_u;
+            rank[ulp_u]++;
+        }
+    }
+};
 #define intmax INT_MAX
 void write()
 {
-    ll n,k=0,f=0;
-    cin>>n;
-    vl a(n,0);
-    vl ans;
-    ll i=0;
-    while(ans.size()!=n)
+ ll n,s=0;
+ cin>>n;
+ vl v(n);
+ cin>>v;
+ lo(i,0,n) s+=v[i];
+ vll dp(n+1,vl(n+1,0));
+ for(int i=0;i<n;i++)
+ {
+    for(int j=n-1;j>=0;j--)
     {
-        while(a[i])
+        if(i==j)
         {
-            i=(i+1)%(n);
+            dp[j][i]=v[i];
         }
-            i=(i+1)%n;
-        while(a[i])
-            {
-                i=(i+1)%(n);
-            }
-        ans.pb(i+1);
-        a[i]=1;
+        else if(i>j)
+        {
+            dp[j][i]=max(v[j]-dp[j+1][i],v[i]-dp[j][i-1]);
     }
-    cout<<ans;
+ }   
+}
+cout<<(s+dp[0][n-1])/2<<endl;
 }
 int main()
 {
@@ -190,6 +224,6 @@ cin.tie(NULL);
     {
         write();
     }
- 
+
     return 0;
 }
