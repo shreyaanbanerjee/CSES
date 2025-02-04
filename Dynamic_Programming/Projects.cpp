@@ -7,7 +7,7 @@ using namespace std;
 #define vi vector<int>
 #define vl vector<ll>
 #define vll vector<vl>
-#define mii map<int, int>
+#define mll map<ll, ll>
 #define si set<int>
 #define sll set<ll,ll>
 #define sc set<char>
@@ -67,8 +67,6 @@ ll gcd(ll a, ll b)
         return a;
     return gcd(b, a % b);
 }
-#define for0(i, n) for (int i = 0; i < (int)(n); ++i)
-#define for1(i, n) for (int i = 1; i <= (int)(n); ++i)
 ll expo(ll a, ll b, ll mod)
 {
     ll res = 1;
@@ -194,39 +192,47 @@ void write()
 {
     ll n;
     cin>>n;
-    ll sum=n*(n+1)/2;
-    if(sum%2)
+    mll m;
+    vl a(n),b(n),c(n);
+    lo(i,0,n)
     {
-        cout<<0<<endl;
-        return;
+        // ll a,b,c;
+        cin>>a[i]>>b[i]>>c[i];
+        m[a[i]],m[b[i]];
     }
-    sum/=2;
-    vll dp(n+1,vl(sum+1,0));
-        dp[0][0]=1;
-    lo(i,1,n)
+    int co=0;
+    for(auto &c:m)
     {
-        lo(j,0,sum+1)
+        // cout<<c.first<<endl;
+        c.second=co++;
+    }
+    // cout<<m[4]<<endl;
+    ll sz=m.size();
+    vector<vector<pair<ll,ll>>> adj(sz+1);
+    lo(i,0,n)
+    {
+        // ll a,b,c;
+        adj[m[b[i]]+1].pb({m[a[i]],c[i]});
+        // cout<<m[a[i]]<<" "<<m[b[i]]<<" "<<c[i]<<endl;
+    }
+    vl dp(sz+1,0);
+    lo(i,0,sz+1)
+    {
+        if(i) dp[i]=dp[i-1];
+        for(auto x:adj[i])
         {
-            if(j>=i)
-            {
-                dp[i][j]=dp[i-1][j]+dp[i-1][j-i];
-            }
-            else
-            {
-                dp[i][j]=dp[i-1][j];
-            }
-            dp[i][j]%=MOD;
+            dp[i]=max(dp[i],dp[x.first]+x.second);
+        }
+        // cout<<dp[i]<<" ";
     }
-}   
-    cout<<dp[n-1][sum]<<endl;
-
+    // cout<<endl;
+    cout<<dp[sz]<<endl;
 }
 int main()
 {
 ios_base::sync_with_stdio(false);
 cin.tie(NULL); 
     int t=1;
-    // cin >> t;
     while (t--)
     {
         write();
@@ -234,3 +240,5 @@ cin.tie(NULL);
 
     return 0;
 }
+//2 3 2 2 2
+//1 2 2 2 2

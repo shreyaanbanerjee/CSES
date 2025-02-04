@@ -192,34 +192,18 @@ public:
 #define intmax INT_MAX
 void write()
 {
-    ll n;
+    ll n,a=0,b;
     cin>>n;
-    ll sum=n*(n+1)/2;
-    if(sum%2)
+    vl v(n);
+    cin>>v;
+    vl dp;
+    lo(i,0,n)
     {
-        cout<<0<<endl;
-        return;
+        auto it=lower_bound(dp.begin(),dp.end(),v[i]);
+        if(it==dp.end()) dp.pb(v[i]);
+        else *it=v[i];
     }
-    sum/=2;
-    vll dp(n+1,vl(sum+1,0));
-        dp[0][0]=1;
-    lo(i,1,n)
-    {
-        lo(j,0,sum+1)
-        {
-            if(j>=i)
-            {
-                dp[i][j]=dp[i-1][j]+dp[i-1][j-i];
-            }
-            else
-            {
-                dp[i][j]=dp[i-1][j];
-            }
-            dp[i][j]%=MOD;
-    }
-}   
-    cout<<dp[n-1][sum]<<endl;
-
+    cout<<dp.size()<<endl;
 }
 int main()
 {
